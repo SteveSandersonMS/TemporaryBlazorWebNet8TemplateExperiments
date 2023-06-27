@@ -1,0 +1,29 @@
+<Project>
+	<PropertyGroup>
+		<StaticWebAssetBasePath>/</StaticWebAssetBasePath>
+		<DefineConstants Condition="'$([MSBuild]::GetTargetPlatformIdentifier($(TargetFramework)))' == ''">$(DefineConstants);SERVER</DefineConstants>
+		<DefineConstants Condition="'$([MSBuild]::GetTargetPlatformIdentifier($(TargetFramework)))' == 'browser'">$(DefineConstants);BROWSER</DefineConstants>
+	</PropertyGroup>
+
+	<ItemGroup Condition="'$([MSBuild]::GetTargetPlatformIdentifier($(TargetFramework)))' == 'browser'">
+		<CompileExclude Include="**\*.Server.cs" />
+		<Compile Remove="@(CompileExclude)" />
+		<None Include="@(CompileExclude)" />
+		<None Remove="**\*.razor.css" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$([MSBuild]::GetTargetPlatformIdentifier($(TargetFramework)))' == ''">
+		<CompileExclude Include="**\*.Browser.cs" />
+		<Compile Remove="@(CompileExclude)" />
+		<None Include="@(CompileExclude)" />
+		<Content Remove="**\appsettings.*" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<StaticWebAssetsEmbeddedConfiguration
+			Include="$(TargetFramework)"
+			Condition="'$([MSBuild]::GetTargetPlatformIdentifier($(TargetFramework)))' == '' And $([MSBuild]::VersionGreaterThanOrEquals(8.0, $([MSBuild]::GetTargetFrameworkVersion($(TargetFramework)))))">
+			<Platform>browser</Platform>
+		</StaticWebAssetsEmbeddedConfiguration>
+	</ItemGroup>
+</Project>
