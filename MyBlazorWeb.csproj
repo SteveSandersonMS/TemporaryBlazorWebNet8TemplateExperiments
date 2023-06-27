@@ -5,6 +5,7 @@
 		<TargetFrameworks>net8.0;net8.0-browser</TargetFrameworks>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
+		<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
 	</PropertyGroup>
 
 	<ItemGroup Condition="'$([MSBuild]::GetTargetPlatformIdentifier($(TargetFramework)))' == 'browser'">
@@ -13,6 +14,33 @@
 
 	<ItemGroup Condition="'$([MSBuild]::GetTargetPlatformIdentifier($(TargetFramework)))' == ''">
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.0-preview.7.23324.1" />
+	</ItemGroup>
+	
+	<!-- SDK  -->
+
+	<PropertyGroup>
+		<StaticWebAssetBasePath>/</StaticWebAssetBasePath>
+		<DefineConstants Condition="'$([MSBuild]::GetTargetPlatformIdentifier($(TargetFramework)))' == ''">$(DefineConstants);SERVER</DefineConstants>
+		<DefineConstants Condition="'$([MSBuild]::GetTargetPlatformIdentifier($(TargetFramework)))' == 'browser'">$(DefineConstants);BROWSER</DefineConstants>
+	</PropertyGroup>
+
+	<ItemGroup Condition="'$([MSBuild]::GetTargetPlatformIdentifier($(TargetFramework)))' == 'browser'">
+		<Compile Remove="**\*.cs" />
+		<Content Remove="**\*.razor" />
+		<Compile Include="Platforms\WebAssembly\**\*.cs" />
+		<Content Include="Platforms\WebAssembly\**\*.razor" />
+		<None Remove="**\*.razor.css" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$([MSBuild]::GetTargetPlatformIdentifier($(TargetFramework)))' == ''">
+		<Compile Remove="**\*.WebAssembly.cs" />
+		<Content Remove="**\appsettings.*" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<StaticWebAssetsEmbeddedConfiguration Include="$(TargetFramework)" Condition="'$([MSBuild]::GetTargetPlatformIdentifier($(TargetFramework)))' == '' And $([MSBuild]::VersionGreaterThanOrEquals(8.0, $([MSBuild]::GetTargetFrameworkVersion($(TargetFramework)))))">
+			<Platform>browser</Platform>
+		</StaticWebAssetsEmbeddedConfiguration>
 	</ItemGroup>
 
 </Project>
