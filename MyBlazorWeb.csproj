@@ -5,7 +5,7 @@
 		<TargetFrameworks>net8.0;net8.0-browser</TargetFrameworks>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+		<BrowserCompilationRoot>ClientShared</BrowserCompilationRoot>
 	</PropertyGroup>
 
 	<ItemGroup>

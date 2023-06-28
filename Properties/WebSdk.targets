@@ -4,14 +4,15 @@
 		<DefineConstants Condition="$(IsBrowser) != 'true'">$(DefineConstants);SERVER</DefineConstants>
 		<DefineConstants Condition="$(IsBrowser) == 'true'">$(DefineConstants);BROWSER</DefineConstants>
 		<NoWarn>$(NoWarn);CA1418</NoWarn>
+		<BrowserCompilationRoot Condition="'$(BrowserCompilationRoot)' == ''">BrowserShared</BrowserCompilationRoot>
 		<!-- CA1418: Version '1.0' is not valid for platform 'browser' -->
 	</PropertyGroup>
 
 	<ItemGroup Condition="$(IsBrowser) == 'true'">
 		<Compile Remove="**\*.cs" />
 		<Content Remove="**\*.razor" />
-		<Compile Include="ClientShared\**\*.cs" />
-		<Content Include="ClientShared\**\*.razor" />
+		<Compile Include="$(BrowserCompilationRoot)\**\*.cs" />
+		<Content Include="$(BrowserCompilationRoot)\**\*.razor" />
 		<None Remove="**\*.razor.css" />
 	</ItemGroup>
 
