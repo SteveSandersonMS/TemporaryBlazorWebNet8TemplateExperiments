@@ -36,7 +36,8 @@
 	<ItemGroup Condition="'$([MSBuild]::GetTargetPlatformIdentifier($(TargetFramework)))' == ''">
 		<Compile Remove="**\*.Client.cs" />
 		<None Include="**\*.Client.cs" />
-		<Content Remove="**\appsettings.*" />
+		<Content Remove="**\appsettings.Client.*" />
+		<None Include="**\appsettings.Client.*" />
 	</ItemGroup>
 
 	<ItemGroup>
