@@ -22,18 +22,20 @@
 		<StaticWebAssetBasePath>/</StaticWebAssetBasePath>
 		<DefineConstants Condition="'$([MSBuild]::GetTargetPlatformIdentifier($(TargetFramework)))' == ''">$(DefineConstants);SERVER</DefineConstants>
 		<DefineConstants Condition="'$([MSBuild]::GetTargetPlatformIdentifier($(TargetFramework)))' == 'browser'">$(DefineConstants);BROWSER</DefineConstants>
+		<NoWarn>$(NoWarn);CA1418</NoWarn> <!-- CA1418: Version '1.0' is not valid for platform 'browser' -->
 	</PropertyGroup>
 
 	<ItemGroup Condition="'$([MSBuild]::GetTargetPlatformIdentifier($(TargetFramework)))' == 'browser'">
 		<Compile Remove="**\*.cs" />
 		<Content Remove="**\*.razor" />
-		<Compile Include="Platforms\WebAssembly\**\*.cs" />
-		<Content Include="Platforms\WebAssembly\**\*.razor" />
+		<Compile Include="Platforms\Browser\**\*.cs" />
+		<Content Include="Platforms\Browser\**\*.razor" />
 		<None Remove="**\*.razor.css" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$([MSBuild]::GetTargetPlatformIdentifier($(TargetFramework)))' == ''">
-		<Compile Remove="**\*.WebAssembly.cs" />
+		<Compile Remove="**\*.Browser.cs" />
+		<None Include="**\*.Browser.cs" />
 		<Content Remove="**\appsettings.*" />
 	</ItemGroup>
 
