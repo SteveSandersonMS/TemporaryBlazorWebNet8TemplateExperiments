@@ -34,6 +34,17 @@
 							  Remove="@(PackageReference->WithMetadataValue('ServerOnly', 'true'))" />
 			<PackageReference Condition="$(IsBrowser) != 'true'"
 							  Remove="@(PackageReference->WithMetadataValue('ClientOnly', 'true'))" />
+			<AmbiguousPackageReference Include="@(PackageReference)"
+									   Condition="%(PackageReference.ServerOnly) != 'true' AND %(PackageReference.ClientOnly) != 'true' AND %(PackageReference.ServerAndClient) != 'true'" />
+		</ItemGroup>
+		<Warning Condition="$(IsBrowser) == 'true' AND '@(AmbiguousPackageReference)' != ''"
+			Text="Ambiguous package reference: @(AmbiguousPackageReference). When multitargeting with a -browser TFM, package references must be marked with ServerOnly='true' or ClientOnly='true' or ServerAndClient='true'." />
+	</Target>
+
+	<Target Condition="$(IsBrowser) == 'true'" Name="FilterSWAForBrowser" AfterTargets="UpdateExistingPackageStaticWebAssets">
+		<ItemGroup>
+			<!-- Otherwise we get clashing assets if you reference a package like QuickGrid that has scoped CSS -->
+			<StaticWebAsset Remove="@(StaticWebAsset)" />
 		</ItemGroup>
 	</Target>
 
