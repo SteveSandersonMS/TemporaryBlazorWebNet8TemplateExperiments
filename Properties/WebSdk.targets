@@ -9,10 +9,10 @@
 	</PropertyGroup>
 
 	<ItemGroup Condition="$(IsBrowser) == 'true'">
-		<Compile Remove="**\*.cs" />
-		<Content Remove="**\*.razor" />
-		<Compile Include="$(BrowserCompilationRoot)\**\*.cs" />
-		<Content Include="$(BrowserCompilationRoot)\**\*.razor" />
+		<_CsRazorItemsToRemove Include="**\*.cs; **\*.razor" />
+		<_CsRazorItemsToRemove Remove="$(BrowserCompilationRoot)\**\*.cs; $(BrowserCompilationRoot)\**\*.razor" />
+		<Content Remove="@(_CsRazorItemsToRemove)" />
+		<Compile Remove="@(_CsRazorItemsToRemove)" />
 		<None Remove="**\*.razor.css" />
 	</ItemGroup>
 
