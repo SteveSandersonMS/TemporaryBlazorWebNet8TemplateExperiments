@@ -8,12 +8,9 @@
 		<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
 	</PropertyGroup>
 
-	<ItemGroup Condition="'$(IsBrowser)' == 'true'">
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.0-preview.7.23324.1" />
-	</ItemGroup>
-
-	<ItemGroup Condition="'$(IsBrowser)' != 'true'">
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.0-preview.7.23324.1" />
+	<ItemGroup>
+		<PackageReference ClientOnly="true" Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.0-preview.7.23324.1" />
+		<PackageReference ServerOnly="true" Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.0-preview.7.23324.1" />
 	</ItemGroup>
 
 	<Import Project="Properties/WebSdk.targets" />

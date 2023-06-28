@@ -27,4 +27,14 @@
 			<Platform>browser</Platform>
 		</StaticWebAssetsEmbeddedConfiguration>
 	</ItemGroup>
+
+	<Target Name="FilterPackageReferencesForBrowser" BeforeTargets="CollectPackageReferences">
+		<ItemGroup>
+			<PackageReference Condition="$(IsBrowser) == 'true'"
+							  Remove="@(PackageReference->WithMetadataValue('ServerOnly', 'true'))" />
+			<PackageReference Condition="$(IsBrowser) != 'true'"
+							  Remove="@(PackageReference->WithMetadataValue('ClientOnly', 'true'))" />
+		</ItemGroup>
+	</Target>
+
 </Project>
