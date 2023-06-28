@@ -28,14 +28,14 @@
 	<ItemGroup Condition="'$([MSBuild]::GetTargetPlatformIdentifier($(TargetFramework)))' == 'browser'">
 		<Compile Remove="**\*.cs" />
 		<Content Remove="**\*.razor" />
-		<Compile Include="Platforms\Browser\**\*.cs" />
-		<Content Include="Platforms\Browser\**\*.razor" />
+		<Compile Include="ClientShared\**\*.cs" />
+		<Content Include="ClientShared\**\*.razor" />
 		<None Remove="**\*.razor.css" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$([MSBuild]::GetTargetPlatformIdentifier($(TargetFramework)))' == ''">
-		<Compile Remove="**\*.Browser.cs" />
-		<None Include="**\*.Browser.cs" />
+		<Compile Remove="**\*.Client.cs" />
+		<None Include="**\*.Client.cs" />
 		<Content Remove="**\appsettings.*" />
 	</ItemGroup>
 
