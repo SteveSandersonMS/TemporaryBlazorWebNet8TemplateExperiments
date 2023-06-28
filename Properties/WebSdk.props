@@ -1,2 +1,5 @@
 <Project>
+	<PropertyGroup Condition="'$([MSBuild]::GetTargetPlatformIdentifier($(TargetFramework)))' == 'browser'">
+		<IsBrowser>true</IsBrowser>
+	</PropertyGroup>
 </Project>

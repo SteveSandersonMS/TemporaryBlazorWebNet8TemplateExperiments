@@ -1,0 +1,30 @@
+<Project>
+	<PropertyGroup>
+		<StaticWebAssetBasePath>/</StaticWebAssetBasePath>
+		<DefineConstants Condition="$(IsBrowser) != 'true'">$(DefineConstants);SERVER</DefineConstants>
+		<DefineConstants Condition="$(IsBrowser) == 'true'">$(DefineConstants);BROWSER</DefineConstants>
+		<NoWarn>$(NoWarn);CA1418</NoWarn>
+		<!-- CA1418: Version '1.0' is not valid for platform 'browser' -->
+	</PropertyGroup>
+
+	<ItemGroup Condition="$(IsBrowser) == 'true'">
+		<Compile Remove="**\*.cs" />
+		<Content Remove="**\*.razor" />
+		<Compile Include="ClientShared\**\*.cs" />
+		<Content Include="ClientShared\**\*.razor" />
+		<None Remove="**\*.razor.css" />
+	</ItemGroup>
+
+	<ItemGroup Condition="$(IsBrowser) != 'true'">
+		<Compile Remove="**\*.Client.cs" />
+		<None Include="**\*.Client.cs" />
+		<Content Remove="**\appsettings.Client.*" />
+		<None Include="**\appsettings.Client.*" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<StaticWebAssetsEmbeddedConfiguration Include="$(TargetFramework)" Condition="$(IsBrowser) != 'true' And $([MSBuild]::VersionGreaterThanOrEquals(8.0, $([MSBuild]::GetTargetFrameworkVersion($(TargetFramework)))))">
+			<Platform>browser</Platform>
+		</StaticWebAssetsEmbeddedConfiguration>
+	</ItemGroup>
+</Project>

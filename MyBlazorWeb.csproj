@@ -8,42 +8,13 @@
 		<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
 	</PropertyGroup>
 
-	<ItemGroup Condition="'$([MSBuild]::GetTargetPlatformIdentifier($(TargetFramework)))' == 'browser'">
+	<ItemGroup Condition="'$(IsBrowser)' == 'true'">
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.0-preview.7.23324.1" />
 	</ItemGroup>
 
-	<ItemGroup Condition="'$([MSBuild]::GetTargetPlatformIdentifier($(TargetFramework)))' == ''">
+	<ItemGroup Condition="'$(IsBrowser)' != 'true'">
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.0-preview.7.23324.1" />
 	</ItemGroup>
-	
-	<!-- SDK  -->
 
-	<PropertyGroup>
-		<StaticWebAssetBasePath>/</StaticWebAssetBasePath>
-		<DefineConstants Condition="'$([MSBuild]::GetTargetPlatformIdentifier($(TargetFramework)))' == ''">$(DefineConstants);SERVER</DefineConstants>
-		<DefineConstants Condition="'$([MSBuild]::GetTargetPlatformIdentifier($(TargetFramework)))' == 'browser'">$(DefineConstants);BROWSER</DefineConstants>
-		<NoWarn>$(NoWarn);CA1418</NoWarn> <!-- CA1418: Version '1.0' is not valid for platform 'browser' -->
-	</PropertyGroup>
-
-	<ItemGroup Condition="'$([MSBuild]::GetTargetPlatformIdentifier($(TargetFramework)))' == 'browser'">
-		<Compile Remove="**\*.cs" />
-		<Content Remove="**\*.razor" />
-		<Compile Include="ClientShared\**\*.cs" />
-		<Content Include="ClientShared\**\*.razor" />
-		<None Remove="**\*.razor.css" />
-	</ItemGroup>
-
-	<ItemGroup Condition="'$([MSBuild]::GetTargetPlatformIdentifier($(TargetFramework)))' == ''">
-		<Compile Remove="**\*.Client.cs" />
-		<None Include="**\*.Client.cs" />
-		<Content Remove="**\appsettings.Client.*" />
-		<None Include="**\appsettings.Client.*" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<StaticWebAssetsEmbeddedConfiguration Include="$(TargetFramework)" Condition="'$([MSBuild]::GetTargetPlatformIdentifier($(TargetFramework)))' == '' And $([MSBuild]::VersionGreaterThanOrEquals(8.0, $([MSBuild]::GetTargetFrameworkVersion($(TargetFramework)))))">
-			<Platform>browser</Platform>
-		</StaticWebAssetsEmbeddedConfiguration>
-	</ItemGroup>
-
+	<Import Project="Properties/WebSdk.targets" />
 </Project>
