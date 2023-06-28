@@ -2,6 +2,8 @@ using MyBlazorWeb;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddMvc();
+
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddServerComponents()
@@ -22,6 +24,8 @@ else
 }
 
 app.UseHttpsRedirection();
+app.UseRouting();
+app.MapDefaultControllerRoute();
 
 app.UseStaticFiles();
 
